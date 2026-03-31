@@ -273,12 +273,12 @@ then use AskUserQuestion:
 }
 ```
 
-- **Interactive review**: run `python3 $CLAUDE_PLUGIN_ROOT/hooks/plan-annotate.py <plan-file-path>` via Bash.
+- **Interactive review**: run `python3 $CLAUDE_PLUGIN_ROOT/scripts/plan-annotate.py <plan-file-path>` via Bash.
   the script opens a copy of the plan in $EDITOR via kitty overlay. if the user makes annotations,
   it outputs a unified diff to stdout. when diff output is present:
   1. read the diff carefully — added lines (+) are user annotations, removed lines (-) are deletions, modified lines show requested changes
   2. revise the plan file to address each annotation
-  3. run `python3 $CLAUDE_PLUGIN_ROOT/hooks/plan-annotate.py <plan-file-path>` again
+  3. run `python3 $CLAUDE_PLUGIN_ROOT/scripts/plan-annotate.py <plan-file-path>` again
   4. repeat until no diff output (user closed editor without changes)
   when the annotation loop completes, ask again with the remaining options (minus "Interactive review")
 - **Auto review**: launch plan-review agent (Task tool with subagent_type=plan-review). After review completes, ask again with the same options (minus "Auto review")
