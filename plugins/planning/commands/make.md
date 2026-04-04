@@ -270,8 +270,7 @@ then use AskUserQuestion:
     "options": [
       {"label": "Interactive review", "description": "Open plan in editor for manual annotation and feedback loop"},
       {"label": "Auto review", "description": "Launch AI plan-review agent for automated analysis"},
-      {"label": "Start implementation", "description": "Commit plan and begin implementing task by task (interactive, in this session)"},
-      {"label": "Execute autonomously", "description": "Commit plan and run /planning:exec for autonomous execution with reviews"},
+      {"label": "Implement", "description": "Commit plan and start implementing"},
       {"label": "Done", "description": "Commit plan, no further action"}
     ],
     "multiSelect": false
@@ -280,7 +279,7 @@ then use AskUserQuestion:
 ```
 
 - **Interactive review**: check if `revdiff` is installed (`which revdiff`).
-  - **if revdiff is available**: run `bash $CLAUDE_PLUGIN_ROOT/scripts/launch-plan-review.sh <plan-file-path>` via Bash.
+  - **if revdiff is available**: run `${CLAUDE_PLUGIN_ROOT}/scripts/launch-plan-review.sh <plan-file-path>` via Bash.
     the script opens revdiff TUI showing the plan with syntax highlighting. user adds line-level annotations.
     on quit, annotations are output to stdout in structured format:
     ```
@@ -290,19 +289,33 @@ then use AskUserQuestion:
     when annotation output is present:
     1. read each annotation — the line number and comment describe what the user wants changed
     2. revise the plan file to address each annotation
-    3. run `bash $CLAUDE_PLUGIN_ROOT/scripts/launch-plan-review.sh <plan-file-path>` again
+    3. run `${CLAUDE_PLUGIN_ROOT}/scripts/launch-plan-review.sh <plan-file-path>` via Bash
     4. repeat until no output (user quit without annotations)
-  - **if revdiff is not available**: fall back to `python3 $CLAUDE_PLUGIN_ROOT/scripts/plan-annotate.py <plan-file-path>`.
+  - **if revdiff is not available**: fall back to `${CLAUDE_PLUGIN_ROOT}/scripts/plan-annotate.py <plan-file-path>` via Bash.
     the script opens a copy of the plan in $EDITOR via terminal overlay. if the user makes annotations,
     it outputs a unified diff to stdout. when diff output is present:
     1. read the diff carefully — added lines (+) are user annotations, removed lines (-) are deletions, modified lines show requested changes
     2. revise the plan file to address each annotation
-    3. run `python3 $CLAUDE_PLUGIN_ROOT/scripts/plan-annotate.py <plan-file-path>` again
+    3. run `${CLAUDE_PLUGIN_ROOT}/scripts/plan-annotate.py <plan-file-path>` via Bash
     4. repeat until no diff output (user closed editor without changes)
   when the annotation loop completes, ask again with the remaining options (minus "Interactive review")
 - **Auto review**: launch plan-review agent (Task tool with subagent_type=plan-review). After review completes, ask again with the same options (minus "Auto review")
-- **Start implementation**: commit plan with message like "docs: add <topic> implementation plan", then begin implementing task 1 interactively in this session. Use TodoWrite tool to track progress and mark todos completed immediately (do not batch)
-- **Execute autonomously**: commit plan, then invoke `/planning:exec <plan-file-path>` for autonomous execution with multi-phase review
+- **Implement**: commit plan with message like "docs: add <topic> implementation plan", then ask implementation mode:
+  ```json
+  {
+    "questions": [{
+      "question": "Implementation mode?",
+      "header": "Mode",
+      "options": [
+        {"label": "Interactive", "description": "Implement task by task in this session"},
+        {"label": "Autonomous", "description": "Run /planning:exec for autonomous execution with reviews"}
+      ],
+      "multiSelect": false
+    }]
+  }
+  ```
+  - **Interactive**: begin implementing task 1 interactively in this session. Use TodoWrite tool to track progress and mark todos completed immediately (do not batch)
+  - **Autonomous**: invoke `/planning:exec <plan-file-path>` for autonomous execution with multi-phase review
 - **Done**: commit plan with message like "docs: add <topic> implementation plan", stop
 
 ## execution enforcement
