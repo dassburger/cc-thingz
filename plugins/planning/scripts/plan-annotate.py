@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Adapted for Org Mode output: temp files use .org extension to match generated plan files
 """plan-annotate.py - PreToolUse hook for ExitPlanMode.
 
 interactive plan review hook that lets you annotate Claude's plans directly
@@ -45,7 +46,7 @@ limitations:
 
 file mode (for /planning:make integration):
 
-    plan-annotate.py docs/plans/foo.md
+    plan-annotate.py docs/plans/foo.org
 
 opens a copy of the plan file in $EDITOR. if user makes changes, outputs
 the unified diff to stdout (no JSON wrapping). Claude reads the diff,
@@ -181,7 +182,7 @@ def run_file_mode(plan_file: Path) -> None:
     plan_content = plan_file.read_text()
 
     # copy to temp file for annotation
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".md", prefix="plan-review-", delete=False) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".org", prefix="plan-review-", delete=False) as tmp:
         tmp.write(plan_content)
         tmp_path = Path(tmp.name)
 
@@ -207,7 +208,7 @@ def run_hook_mode() -> None:
         return
 
     # write plan to temp file for editing
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".md", prefix="plan-review-", delete=False) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".org", prefix="plan-review-", delete=False) as tmp:
         tmp.write(plan_content)
         tmp_path = Path(tmp.name)
 
@@ -350,15 +351,15 @@ def run_tests() -> None:
 
     class TestFileMode(unittest.TestCase):
         def test_file_not_found(self) -> None:
-            path = Path("/tmp/nonexistent-plan-test-12345.md")
+            path = Path("/tmp/nonexistent-plan-test-12345.org")
             with self.assertRaises(SystemExit) as ctx:
                 run_file_mode(path)
             self.assertEqual(ctx.exception.code, 1)
 
         def test_file_read(self) -> None:
             # verify file mode reads content correctly
-            tmp = Path(tempfile.mktemp(suffix=".md"))
-            tmp.write_text("# Plan\n- task 1\n")
+            tmp = Path(tempfile.mktemp(suffix=".org"))
+            tmp.write_text("* Plan\n- task 1\n")
             try:
                 content = tmp.read_text()
                 self.assertEqual(content, "# Plan\n- task 1\n")

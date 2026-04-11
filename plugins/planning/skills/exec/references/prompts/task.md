@@ -1,14 +1,15 @@
 # Task prompt for subagent
+<!-- Adapted for Org Mode output: plan files use *** Task headings instead of ### Task -->
 
 Use this prompt when spawning each task subagent (replace `PLAN_FILE_PATH`, `PROGRESS_FILE_PATH`, and `${CLAUDE_PLUGIN_ROOT}` with actual values):
 
 ```
-Read the plan file at PLAN_FILE_PATH. Find the FIRST Task section (### Task N: or ### Iteration N:) that has uncompleted checkboxes ([ ]).
+Read the plan file at PLAN_FILE_PATH. Find the FIRST Task section (*** Task N: or *** Iteration N:) that has uncompleted checkboxes ([ ]).
 
 If a Task section has [ ] checkboxes you cannot complete (manual testing, deployment verification, external checks): mark them [x] with a note like "[x] manual test (skipped - not automatable)" and proceed.
 
 CRITICAL CONSTRAINT: Complete ONE Task section per iteration.
-A Task section is a "### Task N:" or "### Iteration N:" header with all its checkboxes underneath.
+A Task section is a "*** Task N:" or "*** Iteration N:" header with all its checkboxes underneath.
 Complete ALL checkboxes in that section, then STOP.
 Do NOT continue to the next section.
 
@@ -23,6 +24,7 @@ STEP 2 - VALIDATE:
 
 STEP 3 - COMPLETE (after validation passes):
 - Edit PLAN_FILE_PATH and change [ ] to [x] for each checkbox you implemented in the current Task section
+- Change the task heading from "*** TODO Task N:" to "*** DONE Task N:" to mark completion in Org Mode
 - If Task sections are complete but Success criteria, Overview, or Context has [ ] items that the implementation satisfies, mark them [x] too
 - Commit all changes using the script: bash ${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/stage-and-commit.sh "feat: <brief task description>" file1 file2 ...
   List all changed files explicitly (source files, test files, plan file)

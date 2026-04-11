@@ -3,6 +3,7 @@ name: exec
 description: "Execute plan tasks sequentially using subagents. Use when user says 'exec', 'execute plan', 'run plan', or wants to implement a plan file task by task with isolated subagents."
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(bash:*), Agent, AskUserQuestion, TaskCreate, TaskUpdate, EnterWorktree
 ---
+<!-- Adapted for Org Mode output: plan files use .org extension and *** Task headings -->
 
 # exec
 
@@ -31,9 +32,9 @@ Always substitute: `PLAN_FILE_PATH`, `PROGRESS_FILE_PATH`, `DEFAULT_BRANCH`, `${
 
 ### Step 1. Resolve plan file
 
-If `$ARGUMENTS` contains a file path, use it. Otherwise, list `.md` files in the `plans_dir` userConfig directory (default: `docs/plans/`), excluding `completed/`. If exactly one plan found, use it automatically. If multiple found, ask the user to pick one using AskUserQuestion.
+If `$ARGUMENTS` contains a file path, use it. Otherwise, list `.org` files in the `plans_dir` userConfig directory (default: `docs/plans/`), excluding `completed/`. If exactly one plan found, use it automatically. If multiple found, ask the user to pick one using AskUserQuestion.
 
-Read the plan file. Count total Task sections (`### Task N:` or `### Iteration N:`) to know the scope.
+Read the plan file. Count total Task sections (`*** Task N:` or `*** Iteration N:`) to know the scope.
 
 Determine the default branch: `bash ${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/detect-branch.sh`
 
@@ -66,7 +67,7 @@ Update tasks as you go: `TaskUpdate(taskId, status="in_progress")` when starting
 
 ### Step 4. Create branch
 
-**MANDATORY**: Run the script below. Do NOT create the branch manually — the script strips the date prefix from the plan filename (e.g., `20260329-feature-name.md` → branch `feature-name`).
+**MANDATORY**: Run the script below. Do NOT create the branch manually — the script strips the date prefix from the plan filename (e.g., `20260329-feature-name.org` → branch `feature-name`).
 
 ```
 bash ${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/create-branch.sh <plan-file-path>
@@ -76,7 +77,7 @@ The script creates a feature branch if currently on main/master, or stays on the
 
 ### Step 5. Initialize progress file
 
-Initialize the progress file: `bash ${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/init-progress.sh /tmp/progress-<plan-name>.txt <plan-file-path> <branch-name>` (derive `<plan-name>` from the plan file stem, e.g., `fix-issues.md` → `progress-fix-issues`). The script creates the file with a header. Report the full progress file path to the user.
+Initialize the progress file: `bash ${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/init-progress.sh /tmp/progress-<plan-name>.txt <plan-file-path> <branch-name>` (derive `<plan-name>` from the plan file stem, e.g., `fix-issues.org` → `progress-fix-issues`). The script creates the file with a header. Report the full progress file path to the user.
 
 IMPORTANT: Always use `${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/append-progress.sh` to write to the progress file after initialization. Never write directly.
 
@@ -85,7 +86,7 @@ IMPORTANT: Always use `${CLAUDE_PLUGIN_ROOT}/skills/exec/scripts/append-progress
 Repeat until no `[ ]` checkboxes remain in any Task section:
 
 1. **Re-read the plan file** (subagent modifies it each iteration)
-2. **Find the first Task section** (`### Task N:` or `### Iteration N:`) that still has `[ ]` checkboxes
+2. **Find the first Task section** (`*** Task N:` or `*** Iteration N:`) that still has `[ ]` checkboxes
 3. **If none found** — all tasks complete, go to step 7
 4. **Announce the task to the user** — before spawning the subagent, output a visible summary:
    - Task number and title (from the `### Task N:` header)
@@ -105,7 +106,7 @@ Repeat until no `[ ]` checkboxes remain in any Task section:
    - If no — **retry** with a fresh subagent for the same task up to `task_retries` times (userConfig, default: 1). If all retries fail, stop and report failure to user
 7. **Report to user**: "Task N completed" (one line). The task subagent logs details to the progress file.
 
-CRITICAL: Do NOT stop the loop based on subagent return text. The ONLY condition to stop is: no `[ ]` checkboxes remain in any Task section (`### Task N:` or `### Iteration N:`). Always re-read the plan file to check.
+CRITICAL: Do NOT stop the loop based on subagent return text. The ONLY condition to stop is: no `[ ]` checkboxes remain in any Task section (`*** Task N:` or `*** Iteration N:`). Always re-read the plan file to check.
 
 CRITICAL: You are the ORCHESTRATOR. Never read code, debug errors, investigate diagnostics, or fix issues yourself. If a subagent leaves problems (compiler errors, test failures, lint issues), retry with a fresh subagent — pass the error details in the prompt so it can fix them. All code work happens inside subagents, not in the orchestrator.
 

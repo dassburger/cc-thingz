@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Adapted for Org Mode output: temp files use .org extension to match generated plan files
 """plan-review-hook.py - PreToolUse hook for ExitPlanMode.
 
 intercepts ExitPlanMode and opens plan for user review. uses revdiff if
@@ -65,7 +66,7 @@ def try_revdiff(plan_content: str, plugin_root: str) -> str | None:
 
     # write plan to temp file
     with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".md", prefix="plan-review-", delete=False
+        mode="w", suffix=".org", prefix="plan-review-", delete=False
     ) as tmp:
         tmp.write(plan_content)
         tmp_path = Path(tmp.name)
