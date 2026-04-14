@@ -1,11 +1,12 @@
 #!/bin/bash
+# Adapted for Org Mode output: plan files use .org extension
 # create a feature branch from plan file name if on the default branch
 # usage: create-branch.sh <plan-file-path>
 # exits 0 if branch created or already on feature branch
 # outputs branch name to stdout
 #
 # strips leading YYYYMMDD- date prefix from branch name since plan files
-# use date prefixes (e.g., 20260329-feature-name.md) but branch names should not
+# use date prefixes (e.g., 20260329-feature-name.org) but branch names should not
 
 set -e
 
@@ -45,8 +46,8 @@ elif [ -n "$current_branch" ] && [ -z "$default_branch" ] && [ "$current_branch"
 fi
 
 # derive branch name from plan file name
-# e.g., docs/plans/20260329-feature-name.md -> feature-name
-branch_name=$(basename "$plan_file" .md)
+# e.g., docs/plans/20260329-feature-name.org -> feature-name
+branch_name=$(basename "$plan_file" .org)
 
 # strip leading date prefix if present (YYYYMMDD- or YYYY-MM-DD-)
 # shellcheck disable=SC2001 # regex too complex for ${var//pattern}
