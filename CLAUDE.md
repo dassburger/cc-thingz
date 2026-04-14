@@ -10,7 +10,7 @@ Things to make Claude Code even better — hooks, skills, and commands, organize
 
 - **README.md must be kept up to date** — whenever a new component, script, or configuration is added, update README.md with a description of what it does and how to use it.
 - Content is MIT-licensed.
-- This is a personal project by Umputun (GitHub).
+- This is a personal project initiated by Umputun (GitHub) and customized by Dassburger (GitHub).
 - **No personal configuration** — scripts and configs must be generic and not contain hardcoded personal paths, editor preferences, or machine-specific settings. Use environment variables (e.g., `$EDITOR`) for user-specific values.
 - **Self-contained documentation** — do not reference external custom skills, actions, or configurations that exist only in a user's personal Claude Code setup. All documentation must refer only to what exists in this repository.
 

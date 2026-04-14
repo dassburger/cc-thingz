@@ -3,9 +3,9 @@
   "description": "Release workflow tools - auto-versioning, release notes, changelog updates",
   "version": "2.0.1",
   "author": {
-    "name": "Umputun"
+      "name": "Umputun, Dassburger"
   },
-  "homepage": "https://github.com/umputun/cc-thingz",
-  "repository": "https://github.com/umputun/cc-thingz",
+  "homepage": "https://github.com/dassburger/cc-thingz",
+  "repository": "https://github.com/dassburger/cc-thingz",
   "license": "MIT"
 }

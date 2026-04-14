@@ -3,10 +3,10 @@
   "description": "Structured implementation planning, interactive annotation review, and autonomous plan execution",
   "version": "3.1.2",
   "author": {
-    "name": "Umputun"
+      "name": "Umputun, Dassburger"
   },
-  "homepage": "https://github.com/umputun/cc-thingz",
-  "repository": "https://github.com/umputun/cc-thingz",
+  "homepage": "https://github.com/dassburger/cc-thingz",
+  "repository": "https://github.com/dassburger/cc-thingz",
   "license": "MIT",
   "userConfig": {
     "external_review_cmd": {

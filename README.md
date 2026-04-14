@@ -2,21 +2,23 @@
 
 Things to make [Claude Code](https://claude.ai/code) even better — hooks, skills, and commands, organized as a marketplace of independent plugins.
 
+This is my fork of Umputun's project with the same name.  It will be used to add some customizations based on Umputun's initial idea.  This is not a public project, it's for my personal use only!!!  All credits for the original cc-thingz go to Umptutun.  The text below was created by him.
+
 This is an unapologetically opinionated set. Every skill here is something I actually use — some multiple times a day (brainstorm, plan, review), others less often but worth having in the toolbox. There are plenty of plugin collections out there, from random grab-bags to well-organized catalogs. This one is mine, and it reflects how I work. Even if you don't need my particular toolbox, it might give you ideas for building your own and making Claude Code do what you want it to do.
 
 ## Install
 
 Add the marketplace, then install the plugins you want:
 
-    /plugin marketplace add umputun/cc-thingz
+    /plugin marketplace add dassburger/cc-thingz
 
-    /plugin install brainstorm@umputun-cc-thingz
-    /plugin install review@umputun-cc-thingz
-    /plugin install planning@umputun-cc-thingz
-    /plugin install release-tools@umputun-cc-thingz
-    /plugin install thinking-tools@umputun-cc-thingz
-    /plugin install skill-eval@umputun-cc-thingz
-    /plugin install workflow@umputun-cc-thingz
+    /plugin install brainstorm@dassburger-cc-thingz
+    /plugin install review@dassburger-cc-thingz
+    /plugin install planning@dassburger-cc-thingz
+    /plugin install release-tools@dassburger-cc-thingz
+    /plugin install thinking-tools@dassburger-cc-thingz
+    /plugin install skill-eval@dassburger-cc-thingz
+    /plugin install workflow@dassburger-cc-thingz
 
 Test a plugin locally:
 
@@ -318,7 +320,7 @@ Session workflow helpers for knowledge capture, confusion handling, course corre
 
 ## Credits
 
-Some skills and scripts were influenced by or adapted from community ideas, blog posts, and open-source examples. Sources were not tracked accurately from the start. If you recognize your work and want proper attribution, please [open an issue](https://github.com/umputun/cc-thingz/issues) — I'll fix it.
+Some skills and scripts were influenced by or adapted from community ideas, blog posts, and open-source examples. Sources were not tracked accurately from the start. If you recognize your work and want proper attribution, please [open an issue](https://github.com/dassburger/cc-thingz/issues) — I'll fix it.
 
 ## License
 

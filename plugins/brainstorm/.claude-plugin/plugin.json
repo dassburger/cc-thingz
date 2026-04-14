@@ -3,9 +3,9 @@
   "description": "Collaborative design dialogue - idea to approaches to design to plan",
   "version": "2.1.0",
   "author": {
-    "name": "Umputun"
+      "name": "Umputun, Dassburger"
   },
-  "homepage": "https://github.com/umputun/cc-thingz",
-  "repository": "https://github.com/umputun/cc-thingz",
+  "homepage": "https://github.com/dassburger/cc-thingz",
+  "repository": "https://github.com/dassburger/cc-thingz",
   "license": "MIT"
 }
